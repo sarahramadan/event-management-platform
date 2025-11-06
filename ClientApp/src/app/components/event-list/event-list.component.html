@@ -1,0 +1,118 @@
+<div class="event-list-container">
+  <h1>Event Management</h1>
+  
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <h3>Filters</h3>
+    <div class="filters-grid">
+      <div class="filter-group">
+        <label for="titleFilter">Title:</label>
+        <input 
+          id="titleFilter"
+          type="text" 
+          [(ngModel)]="titleFilter" 
+          (ngModelChange)="loadEvents()"
+          placeholder="Search by title..."
+        />
+      </div>
+      
+      <div class="filter-group">
+        <label for="locationFilter">Location:</label>
+        <input 
+          id="locationFilter"
+          type="text" 
+          [(ngModel)]="locationFilter" 
+          (ngModelChange)="loadEvents()"
+          placeholder="Search by location..."
+        />
+      </div>
+      
+      <div class="filter-group">
+        <label for="statusFilter">Status:</label>
+        <select 
+          id="statusFilter"
+          [(ngModel)]="statusFilter" 
+          (ngModelChange)="loadEvents()"
+        >
+          <option value="">All Status</option>
+          <option [value]="EventStatus.Upcoming">Upcoming</option>
+          <option [value]="EventStatus.Attending">Attending</option>
+          <option [value]="EventStatus.Maybe">Maybe</option>
+          <option [value]="EventStatus.Declined">Declined</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="dateFromFilter">From Date:</label>
+        <input 
+          id="dateFromFilter"
+          type="datetime-local" 
+          [(ngModel)]="dateFromFilter" 
+          (ngModelChange)="loadEvents()"
+        />
+      </div>
+      
+      <div class="filter-group">
+        <label for="dateToFilter">To Date:</label>
+        <input 
+          id="dateToFilter"
+          type="datetime-local" 
+          [(ngModel)]="dateToFilter" 
+          (ngModelChange)="loadEvents()"
+        />
+      </div>
+      
+      <div class="filter-actions">
+        <button type="button" (click)="clearFilters()" class="btn btn-secondary">Clear Filters</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions Section -->
+  <div class="actions-section">
+    <a routerLink="/events/new" class="btn btn-primary">Create New Event</a>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading()" class="loading">
+    Loading events...
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error()" class="error">
+    {{ error() }}
+  </div>
+
+  <!-- Events List -->
+  <div *ngIf="!loading() && !error()" class="events-grid">
+    <div *ngIf="events().length === 0" class="no-events">
+      No events found. <a routerLink="/events/new">Create your first event</a>
+    </div>
+    
+    <div *ngFor="let event of events()" class="event-card">
+      <div class="event-header">
+        <h3>{{ event.title }}</h3>
+        <span class="event-status" [ngClass]="getStatusClass(event.status)">
+          {{ getStatusLabel(event.status) }}
+        </span>
+      </div>
+      
+      <div class="event-details">
+        <div class="event-date">
+          <strong>Date:</strong> {{ event.date | date:'medium' }}
+        </div>
+        <div class="event-location">
+          <strong>Location:</strong> {{ event.location }}
+        </div>
+        <div *ngIf="event.description" class="event-description">
+          <strong>Description:</strong> {{ event.description }}
+        </div>
+      </div>
+      
+      <div class="event-actions">
+        <a [routerLink]="['/events', event.id, 'edit']" class="btn btn-secondary">Edit</a>
+        <button (click)="deleteEvent(event.id)" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

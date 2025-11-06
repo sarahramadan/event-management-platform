@@ -1,0 +1,148 @@
+# ====================
+# Event Management Platform - General Project Ignores
+# ====================
+# This file contains only general project-level ignores.
+# Specific .NET ignores are in: event-management/.gitignore
+# Specific Angular ignores are in: ClientApp/.gitignore
+
+# ====================
+# OS Generated Files
+# ====================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ====================
+# General IDE / Editor Files (Global)
+# ====================
+
+# Visual Studio Code (workspace level)
+*.code-workspace
+
+# Visual Studio (global)
+.vs/
+
+# JetBrains IDEs (global)
+.idea/
+
+# Sublime Text (global)
+*.sublime-project
+
+# ====================
+# Environment & Configuration Files
+# ====================
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# General logs (not covered by specific projects)
+*.log
+
+# ====================
+# Security & Sensitive Files
+# ====================
+
+# Certificates and keys
+*.pfx
+*.p12
+*.key
+*.pem
+*.crt
+*.cert
+
+# Configuration with sensitive data
+appsettings.Production.json
+appsettings.Staging.json
+secrets.json
+config.production.json
+
+# ====================
+# Database Files (Global)
+# ====================
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Other database files
+*.mdb
+*.accdb
+
+# ====================
+# Backup Files
+# ====================
+
+# General backup files
+*.bak
+*.backup
+*.old
+*.orig
+*~
+
+# ====================
+# Documentation & Reports
+# ====================
+
+# Documentation build output
+/docs/_build/
+/documentation/build/
+
+# Reports and exports
+*.report
+*.export
+
+# ====================
+# Project Specific
+# ====================
+
+# Custom application data directories
+/data/
+/uploads/
+/storage/
+/temp/
+/cache/
+
+# Development scripts
+*.dev.sh
+*.dev.bat
+*.dev.ps1
+
+# Docker development files
+docker-compose.override.yml
+.dockerignore.dev
+
+# ====================
+# Deployment & CI/CD
+# ====================
+
+# Deployment scripts with secrets
+deploy.*.sh
+deploy.*.bat
+deploy.*.ps1
+
+# CI/CD local files
+.gitlab-ci.local.yml
+.github/workflows/*.local.yml
