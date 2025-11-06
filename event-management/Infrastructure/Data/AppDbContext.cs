@@ -31,6 +31,28 @@ namespace event_management.Infrastructure.Data
                 b.Property(e => e.Status).IsRequired();
             });
 
+            // Seed default events
+            modelBuilder.Entity<Event>().HasData(
+                new Event
+                {
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    Title = "Community Meetup",
+                    Date = DateTimeOffset.UtcNow.AddDays(7),
+                    Location = "Community Hall",
+                    Description = "Monthly community meetup to discuss local events.",
+                    Status = EventStatus.Upcoming
+                },
+                new Event
+                {
+                    Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                    Title = "Tech Conference",
+                    Date = DateTimeOffset.UtcNow.AddDays(30),
+                    Location = "Convention Center",
+                    Description = "Annual tech conference with talks and workshops.",
+                    Status = EventStatus.Upcoming
+                }
+            );
+
             base.OnModelCreating(modelBuilder);
         }
     }
