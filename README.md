@@ -20,7 +20,7 @@ Full-stack Event Management Platform built with .NET 8, Angular, and SQLite. Sup
 
 ```
 event-management/
-├── ClientApp/                 # Angular Frontend
+├── event-frontend/                 # Angular Frontend
 │   ├── src/
 │   │   ├── app/
 │   │   │   ├── event/    # Angular components
@@ -90,7 +90,7 @@ dotnet run
 
 **Start Frontend (in another terminal):**
 ```cmd
-cd ClientApp
+cd event-frontend
 npm install
 npm start
 ```
@@ -195,7 +195,7 @@ Edit `appsettings.json` or `appsettings.Development.json` in the `event-manageme
 
 ### Frontend Configuration
 
-Edit environment files in `ClientApp/src/environments/`:
+Edit environment files in `event-frontend/src/environments/`:
 - `environment.ts` - Development configuration
 
 ## Database
