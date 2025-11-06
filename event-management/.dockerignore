@@ -1,0 +1,49 @@
+# Dockerfile and docker-compose files
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+LICENSE
+
+# Build output
+bin/
+obj/
+out/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Test results
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+
+# Logs
+*.log
+
+# SQLite database files (we'll mount these as volumes)
+*.db
+*.db-wal
+*.db-shm
+
+# Cache
+.cache/
+
+# Temp files
+*.tmp
+*~

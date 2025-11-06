@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # .NET Backend API
+  backend:
+    build:
+      context: ./event-management
+      dockerfile: Dockerfile
+    container_name: event-management-api
+    ports:
+      - "5059:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/events.db
+    volumes:
+      - ./data:/app/data
+    networks:
+      - event-management-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: ./ClientApp
+      dockerfile: Dockerfile
+    container_name: event-management-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - event-management-network
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+
+  # SQLite Database (we'll use a volume for persistence)
+  # Note: SQLite doesn't need a separate container, but we create a volume for data persistence
+  
+volumes:
+  # Volume for SQLite database persistence
+  sqlite-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data
+
+networks:
+  event-management-network:
+    driver: bridge
+    name: event-management-net
