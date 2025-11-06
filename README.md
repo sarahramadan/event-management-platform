@@ -225,6 +225,45 @@ The application uses SQLite with Entity Framework Core.
 - Frontend: Visit http://localhost:4200
 
 
+
+## Technical TODO List
+
+> This section tracks planned technical enhancements and architectural improvements for the Event Management Platform.
+
+### Backend (.NET)
+
+- **Unit Testing**
+	- Add and expand unit tests for services, controllers, and repository logic using xUnit or NUnit.
+	- Ensure coverage for validation, mapping, and authentication logic.
+
+- **Seed Data Separation**
+	- Move database seed logic to a dedicated service/class for better maintainability and testability.
+
+- **Object Mapping**
+	- Integrate AutoMapper or similar library to handle DTO/entity conversions and reduce manual mapping code.
+
+- **Validation**
+	- Add FluentValidation for all DTOs, including a rule to ensure event titles are unique.
+
+- **EF Core Configuration**
+	- Refactor Entity Framework configuration using Fluent API in separate configuration classes for each entity to improve separation of concerns.
+
+- **Authentication & Authorization**
+	- Implement JWT authentication and integrate IdentityServer4 for secure user management and API protection.
+
+### Frontend (Angular)
+
+- **Unit Testing**
+	- Add and expand unit tests for Angular components, services, and guards using Jasmine/Karma.
+	- Test authentication flows, UI logic, and API integration.
+
+- **JWT Authentication**
+	- Add login/register UI and connect to backend authentication endpoints using JWT.
+	- Store and manage JWT tokens securely in the frontend.
+	- Protect routes and display user-specific content based on authentication state.
+
+---
+
 ## License
 
 This project is for educational purposes.
