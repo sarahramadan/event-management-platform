@@ -1,12 +1,13 @@
 version: '3.8'
 
 services:
-  # .NET Backend API
-  backend:
+  # .NET Backend API (Development)
+  backend-dev:
     build:
       context: ./event-management
       dockerfile: Dockerfile
-    container_name: event-management-api
+      target: build
+    container_name: event-management-api-dev
     ports:
       - "5059:80"
     environment:
@@ -15,45 +16,32 @@ services:
       - ConnectionStrings__DefaultConnection=Data Source=/app/data/events.db
     volumes:
       - ./data:/app/data
+      - ./event-management:/src
     networks:
       - event-management-network
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    command: ["dotnet", "watch", "run", "--project", "/src/event-management.csproj", "--urls", "http://+:80"]
 
-  # Angular Frontend
-  frontend:
-    build:
-      context: ./ClientApp
-      dockerfile: Dockerfile
-    container_name: event-management-frontend
+  # Angular Frontend (Development with live reload)
+  frontend-dev:
+    image: node:20
+    container_name: event-management-frontend-dev
+    working_dir: /app
     ports:
-      - "4200:80"
-    depends_on:
-      - backend
+      - "4200:4200"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./event-frontend:/app
+      - /app/node_modules
     networks:
       - event-management-network
     restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-
-  # SQLite Database (we'll use a volume for persistence)
-  # Note: SQLite doesn't need a separate container, but we create a volume for data persistence
-  
-volumes:
-  # Volume for SQLite database persistence
-  sqlite-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./data
+    command: sh -c "npm install && npm start -- --host 0.0.0.0 --port 4200"
+    depends_on:
+      - backend-dev
 
 networks:
   event-management-network:
     driver: bridge
-    name: event-management-net
+    name: event-management-dev-nets

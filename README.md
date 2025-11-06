@@ -23,9 +23,8 @@ event-management/
 ├── ClientApp/                 # Angular Frontend
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── components/    # Angular components
-│   │   │   ├── models/        # TypeScript interfaces
-│   │   │   ├── services/      # HTTP services
+│   │   │   ├── event/    # Angular components
+│   │   │   ├── shared/        # common components
 │   │   │   └── environments/  # Environment configuration
 │   │   └── styles.css         # Global styles
 │   └── package.json
@@ -34,8 +33,9 @@ event-management/
 │   ├── Domain/               # Domain entities
 │   ├── Application/          # DTOs and services
 │   ├── Infrastructure/       # Data access layer
-│   └── Program.cs           # Application entry point
+│   └── Program.cs            # Application entry point
 └── README.md                 # Project documentation
+└── docker-compose.yml        # Running app as container
 ```
 
 ## Getting Started
@@ -65,10 +65,10 @@ docker-compose up -d --build
 #### Development Mode (with live reload)
 ```bash
 # Start development environment
-docker-compose -f docker-compose.dev.yml up --build
+docker-compose -f docker-compose.yml up --build
 
 # Run in background
-docker-compose -f docker-compose.dev.yml up -d --build
+docker-compose -f docker-compose.yml up -d --build
 ```
 
 #### Stopping Services
@@ -96,11 +96,6 @@ npm start
 ```
 
 ### Access the Application
-
-**Docker (Production):**
-- **Frontend**: http://localhost:4200
-- **Backend API**: http://localhost:5059
-- **Swagger UI**: http://localhost:5059/swagger
 
 **Docker (Development):**
 - **Frontend**: http://localhost:4200 (with live reload)
@@ -148,51 +143,8 @@ The application is containerized using Docker with the following services:
 - **Database**: SQLite database with persistent volume at `./data`
 <!-- Network: uses a custom bridge network for service communication -->
 
-### Docker Commands
+`
 
-```bash
-# Build images
-docker-compose build
-
-# Start services
-docker-compose up
-
-# Start services in background
-docker-compose up -d
-
-# View logs
-docker-compose logs
-docker-compose logs backend
-docker-compose logs frontend
-
-# Restart specific service
-docker-compose restart backend
-
-# Remove all containers and volumes
-docker-compose down -v
-
-# Remove images
-docker-compose down --rmi all
-```
-
-### Development with Docker
-
-```bash
-# Start development environment with live reload
-docker-compose -f docker-compose.dev.yml up
-
-# Rebuild and start
-docker-compose -f docker-compose.dev.yml up --build
-
-# Install new npm packages (example)
-docker-compose -f docker-compose.dev.yml exec frontend-dev npm install <package-name>
-
-# Access backend container shell
-docker-compose exec backend bash
-
-# Access frontend container shell
-docker-compose -f docker-compose.dev.yml exec frontend-dev sh
-```
 
 ### Data Persistence
 
@@ -215,7 +167,7 @@ dotnet watch run
 ### Frontend Development
 
 ```cmd
-cd ClientApp
+cd event-frontend
 npm start
 ```
 
@@ -231,7 +183,7 @@ dotnet publish -c Release
 
 **Frontend:**
 ```cmd
-cd ClientApp
+cd event-frontend
 npm run build
 ```
 
@@ -245,7 +197,6 @@ Edit `appsettings.json` or `appsettings.Development.json` in the `event-manageme
 
 Edit environment files in `ClientApp/src/environments/`:
 - `environment.ts` - Development configuration
-- `environment.prod.ts` - Production configuration
 
 ## Database
 
@@ -259,46 +210,9 @@ The application uses SQLite with Entity Framework Core.
 **Manual Setup:**
 - Database file is created in the backend project folder when you first run the application
 
-## Troubleshooting
 
-### Docker Issues
 
-1. **Port Conflicts**: 
-   - Frontend (4200) or Backend (5059) ports may be in use
-   - Change ports in `docker-compose.yml` if needed
-   - Kill processes using ports: `netstat -ano | findstr :4200`
 
-2. **Build Failures**:
-   ```bash
-   # Clean Docker cache
-   docker system prune -a
-   
-   # Rebuild without cache
-   docker-compose build --no-cache
-   ```
-
-3. **Volume/Permission Issues**:
-   ```bash
-   # On Windows, ensure Docker has access to the drive
-   # On Linux/Mac, check directory permissions
-   chmod 755 ./data
-   ```
-
-4. **Container Logs**:
-   ```bash
-   # View all logs
-   docker-compose logs
-   
-   # View specific service logs
-   docker-compose logs backend
-   docker-compose logs frontend
-   ```
-
-### Common Issues (Manual Setup)
-
-1. **CORS Errors**: Make sure the backend is running and CORS is properly configured
-2. **npm/PowerShell Execution Policy**: Run PowerShell as administrator and execute: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
-3. **Port Conflicts**: Make sure ports 4200 (frontend) and 7049 (backend) are available
 
 ### Checking if Services are Running
 
@@ -310,13 +224,6 @@ The application uses SQLite with Entity Framework Core.
 - Backend: Visit https://localhost:7049/swagger
 - Frontend: Visit http://localhost:4200
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
 
 ## License
 

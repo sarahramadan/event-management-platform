@@ -1,0 +1,34 @@
+<div class="event-form-container">
+  <h1>{{ eventId ? 'Edit Event' : 'Create Event' }}</h1>
+  <form #eventForm="ngForm" (ngSubmit)="onSubmit(eventForm)" novalidate>
+    <div class="form-group mb-2">
+  <input [(ngModel)]="event().title" name="title" placeholder="Title" required #titleCtrl="ngModel" class="form-control" />
+      <div *ngIf="titleCtrl.invalid && titleCtrl.touched" class="text-danger small">Title is required.</div>
+    </div>
+    <div class="form-group mb-2">
+  <input [(ngModel)]="event().date" name="date" type="datetime-local" placeholder="Date & Time" required #dateCtrl="ngModel" class="form-control" [min]="!eventId ? minDateTime : null" />
+      <div *ngIf="dateCtrl.invalid && dateCtrl.touched" class="text-danger small">Date & Time is required.</div>
+    </div>
+    <div class="form-group mb-2">
+  <input [(ngModel)]="event().location" name="location" placeholder="Location" required #locationCtrl="ngModel" class="form-control" />
+      <div *ngIf="locationCtrl.invalid && locationCtrl.touched" class="text-danger small">Location is required.</div>
+    </div>
+    <div class="form-group mb-2">
+  <textarea [(ngModel)]="event().description" name="description" placeholder="Description" class="form-control"></textarea>
+    </div>
+    <div class="form-group mb-2">
+  <select [(ngModel)]="event().status" name="status" required #statusCtrl="ngModel" class="form-select">
+        <option [value]="0">Upcoming</option>
+        <option [value]="1">Attending</option>
+        <option [value]="2">Maybe</option>
+        <option [value]="3">Declined</option>
+      </select>
+      <div *ngIf="statusCtrl.invalid && statusCtrl.touched" class="text-danger small">Status is required.</div>
+    </div>
+  <button type="submit" [disabled]="eventForm.invalid || loading()" class="btn btn-primary">
+      {{ eventId ? 'Update' : 'Create' }}
+    </button>
+  </form>
+  <div *ngIf="loading()">Loading...</div>
+  <div *ngIf="error" class="text-danger">{{ error }}</div>
+</div>

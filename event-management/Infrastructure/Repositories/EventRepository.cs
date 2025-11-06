@@ -52,6 +52,10 @@ namespace event_management.Infrastructure.Repositories
 
             query = query.OrderBy(e => e.Date);
 
+            // Pagination
+            int skip = (filters.Page - 1) * filters.PageSize;
+            query = query.Skip(skip).Take(filters.PageSize);
+
             return await query.ToListAsync();
         }
     }

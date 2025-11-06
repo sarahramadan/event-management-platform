@@ -1,0 +1,68 @@
+<div class="event-list-container" style="max-width: 1200px; margin: 40px auto; background: #fff; box-shadow: 0 2px 16px rgba(0,0,0,0.08); border-radius: 12px; padding: 32px;">
+  <h1>Events</h1>
+  <div class="filters" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+  <input matInput [(ngModel)]="filter().title" placeholder="Title" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Location</mat-label>
+  <input matInput [(ngModel)]="filter().location" placeholder="Location" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+  <mat-select [(ngModel)]="filter().status">
+        <mat-option value="">All Status</mat-option>
+        <mat-option [value]="EventStatus.Upcoming">Upcoming</mat-option>
+        <mat-option [value]="EventStatus.Attending">Attending</mat-option>
+        <mat-option [value]="EventStatus.Maybe">Maybe</mat-option>
+        <mat-option [value]="EventStatus.Declined">Declined</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date From</mat-label>
+      <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="filter().dateFrom" />
+      <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFrom></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date To</mat-label>
+      <input matInput [matDatepicker]="pickerTo" [(ngModel)]="filter().dateTo" />
+      <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerTo></mat-datepicker>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="applyFilters()">Apply Filters</button>
+  <button mat-stroked-button color="basic" *ngIf="filter().title || filter().location || filter().status || filter().dateFrom || filter().dateTo" (click)="clearFilters()">Clear</button>
+  </div>
+  <div *ngIf="loading()">Loading...</div>
+  <div *ngIf="error">{{ error }}</div>
+  <div *ngIf="events().length === 0 && !loading()">No events found.</div>
+  <table mat-table [dataSource]="events()" class="mat-elevation-z8" style="width: 100%; border-radius: 8px; overflow: hidden; background: #fafafa;" *ngIf="events().length > 0">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <td mat-cell *matCellDef="let event">{{ event.title }}</td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let event">{{ event.date | date:'short' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef>Location</th>
+      <td mat-cell *matCellDef="let event">{{ event.location }}</td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let event">{{ EventStatus[event.status] }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let event" style="white-space: nowrap;">
+  <a class="btn btn-primary btn-sm me-2" [routerLink]="['/events', event.id]">Update</a>
+        <button class="btn btn-danger btn-sm" *ngIf="event.id" (click)="openDeleteDialog(event.id)">Delete</button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [length]="totalEvents" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)"></mat-paginator>
+</div>

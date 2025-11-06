@@ -20,8 +20,14 @@ namespace event_management.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<EventDto>>> Get([FromQuery] string? title, [FromQuery] DateTimeOffset? dateFrom,
-            [FromQuery] DateTimeOffset? dateTo, [FromQuery] string? location, [FromQuery] EventStatus? status)
+        public async Task<ActionResult<List<EventDto>>> Get(
+            [FromQuery] string? title,
+            [FromQuery] DateTimeOffset? dateFrom,
+            [FromQuery] DateTimeOffset? dateTo,
+            [FromQuery] string? location,
+            [FromQuery] EventStatus? status,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
             var filters = new EventQueryParameters
             {
@@ -29,7 +35,9 @@ namespace event_management.Controllers
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 Location = location,
-                Status = status
+                Status = status,
+                Page = page,
+                PageSize = pageSize
             };
 
             var list = await _service.QueryAsync(filters);
