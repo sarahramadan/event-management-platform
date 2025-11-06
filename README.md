@@ -53,14 +53,6 @@ event-management/
 
 ### Quick Start with Docker
 
-#### Production Mode
-```bash
-# Build and start all services
-docker-compose up --build
-
-# Run in background
-docker-compose up -d --build
-```
 
 #### Development Mode (with live reload)
 ```bash
@@ -107,30 +99,6 @@ npm start
 - **Backend API**: https://localhost:7049
 - **Swagger UI**: https://localhost:7049/swagger
 
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/events` | Get all events (with optional filters) |
-| GET | `/api/events/{id}` | Get event by ID |
-| POST | `/api/events` | Create new event |
-| PUT | `/api/events/{id}` | Update event |
-| DELETE | `/api/events/{id}` | Delete event |
-
-### Query Parameters for GET /api/events
-
-- `title` - Filter by event title
-- `location` - Filter by location
-- `status` - Filter by status (0=Upcoming, 1=Attending, 2=Maybe, 3=Declined)
-- `dateFrom` - Filter events from this date
-- `dateTo` - Filter events to this date
-
-## Event Status Types
-
-- **Upcoming** (0) - Event is scheduled for the future
-- **Attending** (1) - User plans to attend
-- **Maybe** (2) - User might attend
-- **Declined** (3) - User will not attend
 
 ## Docker
 
@@ -153,39 +121,7 @@ The application is containerized using Docker with the following services:
 - Database persists between container restarts
 - Backup your `./data` directory to preserve your data
 
-## Development
 
-### Local Development (without Docker)
-
-### Backend Development
-
-```cmd
-cd event-management
-dotnet watch run
-```
-
-### Frontend Development
-
-```cmd
-cd event-frontend
-npm start
-```
-
-The frontend will automatically reload when you make changes to the source files.
-
-### Building for Production
-
-**Backend:**
-```cmd
-cd event-management
-dotnet publish -c Release
-```
-
-**Frontend:**
-```cmd
-cd event-frontend
-npm run build
-```
 
 ## Configuration
 
@@ -198,31 +134,11 @@ Edit `appsettings.json` or `appsettings.Development.json` in the `event-manageme
 Edit environment files in `event-frontend/src/environments/`:
 - `environment.ts` - Development configuration
 
-## Database
-
-The application uses SQLite with Entity Framework Core. 
-
-**Docker Setup:**
-- Database file (`events.db`) is automatically created in the `./data` directory
-- Data persists between container restarts through Docker volumes
-- Database is accessible from both development and production containers
-
-**Manual Setup:**
-- Database file is created in the backend project folder when you first run the application
 
 
 
 
 
-### Checking if Services are Running
-
-**Docker:**
-- Backend: Visit http://localhost:5059/swagger
-- Frontend: Visit http://localhost:4200
-
-**Manual Setup:**
-- Backend: Visit https://localhost:7049/swagger
-- Frontend: Visit http://localhost:4200
 
 
 
