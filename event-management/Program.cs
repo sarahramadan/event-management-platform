@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using event_management.Infrastructure.Data;
 using event_management.Infrastructure.Repositories;
 using event_management.Application.Interfaces;
@@ -22,8 +26,12 @@ builder.Services.AddCors(options =>
 });
 
 // EF Core SQLite
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=events.db";
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=events.db"));
+{
+    // Specify the migrations assembly to ensure migrations are associated with the Infrastructure project
+    options.UseSqlite(connectionString, b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.GetName().Name));
+});
 
 // Register repository and service (application layer)
 builder.Services.AddScoped<IEventRepository, EventRepository>();
