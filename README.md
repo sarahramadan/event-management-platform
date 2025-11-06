@@ -180,6 +180,11 @@ Edit environment files in `event-frontend/src/environments/`:
 
 ---
 
+
+## Credits
+
+This project was developed with the assistance of GitHub Copilot.
+
 ## License
 
 This project is for educational purposes.
